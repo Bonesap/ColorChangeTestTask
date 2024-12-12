@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import Animated, {
   interpolate,
   Extrapolate,
@@ -7,18 +7,20 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 
-const ITEM_WIDTH = 70; 
+const ITEM_WIDTH = 70;
 
 type ColorCarouselItemProps = {
   color: string;
   index: number;
   contentOffset: SharedValue<number>;
+  onColorTap: (color: string) => void; 
 };
 
 const ColorCarouselItem: React.FC<ColorCarouselItemProps> = ({
   color,
   index,
   contentOffset,
+  onColorTap,
 }) => {
   const animatedStyle = useAnimatedStyle(() => {
     const inputRange = [
@@ -57,9 +59,11 @@ const ColorCarouselItem: React.FC<ColorCarouselItemProps> = ({
   });
 
   return (
-    <Animated.View
-      style={[styles.circle, animatedStyle, { backgroundColor: color }]}
-    />
+    <Pressable onPress={() => onColorTap(color)}>
+      <Animated.View
+        style={[styles.circle, animatedStyle, { backgroundColor: color }]}
+      />
+    </Pressable>
   );
 };
 
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     overflow: 'hidden',
-    marginBottom: 5
+    marginBottom: 5,
   },
 });
 
